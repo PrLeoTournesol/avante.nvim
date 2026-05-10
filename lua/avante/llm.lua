@@ -1896,6 +1896,9 @@ function M._stream(opts)
           end
           return
         end
+        vim.schedule(function()
+          vim.notify("streaming_tool_use=" .. tostring(streaming_tool_use) .. " is_edit=" .. tostring(is_edit_tool_use), vim.log.levels.WARN)
+        end)
         if streaming_tool_use and not is_edit_tool_use then return end
         partial_tool_use_message.is_calling = true
         if opts.on_messages_add then opts.on_messages_add({ partial_tool_use_message }) end
