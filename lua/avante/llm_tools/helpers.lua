@@ -31,6 +31,7 @@ local default_permission_options = {
 ---@param callback fun(option_id: string)
 ---@param confirm_opts avante.ui.ConfirmOptions
 function M.confirm_inline(callback, confirm_opts)
+  vim.notify("confirm inline called, always_yes=" .. tostring(session_ctx and session_ctx.always_yes), vim.log.levels.WARN)
   local sidebar = require("avante").get()
   local items =
     ACPConfirmAdapter.generate_buttons_for_acp_options(confirm_opts.permission_options or default_permission_options)
@@ -53,6 +54,7 @@ end
 ---@param tool_name? string -- Optional tool name to check against tool_permissions config
 ---@return avante.ui.Confirm | nil
 function M.confirm(message, callback, confirm_opts, session_ctx, tool_name)
+  vim.notify("confirm called, always_yes=" .. tostring(session_ctx and session_ctx.always_yes), vim.log.levels.WARN)
   callback = vim.schedule_wrap(callback)
   if session_ctx and session_ctx.always_yes then
     callback(true)
