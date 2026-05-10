@@ -31,7 +31,6 @@ local default_permission_options = {
 ---@param callback fun(option_id: string)
 ---@param confirm_opts avante.ui.ConfirmOptions
 function M.confirm_inline(callback, confirm_opts)
-  vim.notify("confirm inline called, always_yes=" .. tostring(session_ctx and session_ctx.always_yes), vim.log.levels.WARN)
   local sidebar = require("avante").get()
   local items =
     ACPConfirmAdapter.generate_buttons_for_acp_options(confirm_opts.permission_options or default_permission_options)
@@ -54,7 +53,6 @@ end
 ---@param tool_name? string -- Optional tool name to check against tool_permissions config
 ---@return avante.ui.Confirm | nil
 function M.confirm(message, callback, confirm_opts, session_ctx, tool_name)
-  vim.notify("confirm called, always_yes=" .. tostring(session_ctx and session_ctx.always_yes), vim.log.levels.WARN)
   callback = vim.schedule_wrap(callback)
   if session_ctx and session_ctx.always_yes then
     callback(true)
@@ -63,6 +61,8 @@ function M.confirm(message, callback, confirm_opts, session_ctx, tool_name)
 
   -- Check behaviour.auto_approve_tool_permissions config for auto-approval
   local auto_approve = Config.behaviour.auto_approve_tool_permissions
+  
+  vim.notify("auto_approve=" .. tostring(auto_approve_tool_permissions), vim.log.levels.WARN)
 
   -- If auto_approve is true, auto-approve all tools
   if auto_approve == true then
@@ -94,6 +94,7 @@ function M.confirm(message, callback, confirm_opts, session_ctx, tool_name)
   if not sidebar or not sidebar.containers.input or not sidebar.containers.input.winid then
     Utils.error("Avante sidebar not found", { title = "Avante" })
     callback(false)
+    vim.notify("Sidebar not found", vim.log.levels.WARN)
     return
   end
   confirm_opts = vim.tbl_deep_extend("force", { container_winid = sidebar.containers.input.winid }, confirm_opts or {})
@@ -109,7 +110,9 @@ function M.confirm(message, callback, confirm_opts, session_ctx, tool_name)
     end
     M.confirm_popup = nil
   end, confirm_opts)
+  vim.notify("opening confirm popup", vim.log.levels.WARN)
   M.confirm_popup:open()
+  vim.notify("confirm popup opened", vim.log.levels.WARN)
   return M.confirm_popup
 end
 
