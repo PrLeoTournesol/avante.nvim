@@ -62,7 +62,7 @@ function M.confirm(message, callback, confirm_opts, session_ctx, tool_name)
   -- Check behaviour.auto_approve_tool_permissions config for auto-approval
   local auto_approve = Config.behaviour.auto_approve_tool_permissions
   
-  vim.notify("auto_approve=" .. tostring(auto_approve_tool_permissions), vim.log.levels.WARN)
+  vim.notify("auto_approve=" .. tostring(auto_approve), vim.log.levels.WARN)
 
   -- If auto_approve is true, auto-approve all tools
   if auto_approve == true then
