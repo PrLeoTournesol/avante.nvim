@@ -712,10 +712,14 @@ Please make sure the diff is formatted correctly, and that the SEARCH/REPLACE bl
     end
   end
 
+  im.notify("REACHING STREAMING CONDITION, is_streaming=" .. tostring(is_streaming) , vim.log.levels.WARN)
+
   if is_streaming then
     -- In streaming mode, don't show confirmation dialog, just apply changes
     return
   end
+
+  vim.notify("REACHING CONFIRM DIALOG, diff_blocks=" .. tostring(#diff_blocks), vim.log.levels.WARN)
 
   pcall(vim.cmd.undojoin)
 
