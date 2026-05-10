@@ -1896,7 +1896,7 @@ function M._stream(opts)
           end
           return
         end
-        if streaming_tool_use then return end
+        if streaming_tool_use and not is_edit_tool_use then return end
         partial_tool_use_message.is_calling = true
         if opts.on_messages_add then opts.on_messages_add({ partial_tool_use_message }) end
         -- Either on_complete handles the tool result asynchronously or we receive the result and error synchronously when either is not nil
