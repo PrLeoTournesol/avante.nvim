@@ -200,6 +200,7 @@ Please make sure the diff is formatted correctly, and that the SEARCH/REPLACE bl
 
   local original_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
   local sidebar = require("avante").get()
+  vim.notify("sidebar=" .. tostring(sidebar ~= nil) .. " input=" .. tostring(sidebar and sidebar.containers ~= nil and sidebar.containers.input ~= nil) .. " winid=" .. tostring(sidebar and sidebar.containers and sidebar.containers.input and sidebar.containers.input.winid ~= nil), vim.log.levels.WARN)
   if not sidebar then return false, "Avante sidebar not found" end
 
   --- add line numbers to rough_diff_block
@@ -712,14 +713,10 @@ Please make sure the diff is formatted correctly, and that the SEARCH/REPLACE bl
     end
   end
 
-  vim.notify("REACHING STREAMING CONDITION, is_streaming=" .. tostring(is_streaming) , vim.log.levels.WARN)
-
   if is_streaming then
     -- In streaming mode, don't show confirmation dialog, just apply changes
     return
   end
-
-  vim.notify("REACHING CONFIRM DIALOG, diff_blocks=" .. tostring(#diff_blocks), vim.log.levels.WARN)
 
   pcall(vim.cmd.undojoin)
 
